@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Nav.css";
 
 function Nav() {
   const [show, handleShow] = useState(false);
+  const navigate = useNavigate();
+
   const transitionNavBar = () => {
     if (window.scrollY > 100) {
       handleShow(true);
@@ -21,19 +24,21 @@ function Nav() {
       <div className={` nav ${show && "nav_black"}`}>
         <div className="nav_contents">
           <img
+          onClick={()=>navigate('/')}
             className="nav_logo"
             src=" https://www.freepnglogos.com/uploads/red-netflix-logo-text-png-3.png"
           ></img>
 
-          <img
+          <img 
+          onClick={() => navigate('/profile')}
             className="avatar_logo"
             src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png?20201013161117"
             alt=""
-          ></img>
+          />
         </div>
       </div>
     </div>
-  );
+  ); 
 }
 
 export default Nav;

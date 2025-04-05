@@ -1,0 +1,88 @@
+.LoginScreen{
+   position: relative;
+   height: 100%;
+   background: url("https://cdn.moviefone.com/wp-content/uploads/2024/12/24-best-movies-of-2024.jpg?q=80") 
+   center no-repeat ;
+   background-size: cover;
+   
+}
+.loginscreenlogo{
+    position: fixed;
+    top: 10px;
+    left: 0;
+    width: 80px;
+    object-fit: contain;
+    padding-left: 20px;
+    cursor: pointer;
+}
+
+.loginscreen_button{
+    position: fixed;
+    right: 20px;
+    top: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: azure;
+    background-color: #de0c17;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    border-radius: 5%;
+    outline: none;
+}
+.loginscreen_gradient{
+    width: 100%;
+    z-index: 1;
+    height: 100vh;
+    background: rgba(0, 0, 0 , 0.55);
+    background-image: linear-gradient(to top,
+    rgba(0, 0, 0 , 0.8) 0,
+    rgba(0, 0, 0 , 0) 60%,
+    rgba(0, 0, 0 , 0.8)100%
+    );
+}
+.loginscreen_body{
+    position: absolute;
+    top: 30%;
+    left: 15%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 1;
+    color: aliceblue;
+    padding: 20px;
+    left: 0;
+    right: 0;
+}
+.loginscreen_body > h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    font-weight: 350;
+}
+.loginscreen_body > h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+.loginscreen_body > h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 100;
+}
+.loginscreen_input > form > input{
+    padding: 10px;
+    height: 30px;
+    width: 30%;
+    border: none;
+    max-width: 600px;
+}
+
+.loginscreen_getstarted{
+    padding: 16px 20px;
+    font-size: 1rem;
+    color: aliceblue;
+    background-color: #de0c17;
+    border: none;
+    cursor: pointer;
+
+}
