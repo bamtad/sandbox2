@@ -31,7 +31,7 @@ function App() {
     });
   
     return unsubscribe; // Removes the listener when the component unmounts
-  }, []);
+  }, [dispatch]);
   
   return (
     <div className="app">
