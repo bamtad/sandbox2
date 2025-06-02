@@ -1,56 +1,124 @@
-.profileScreen{
+.profileScreen {
     height: 100vh;
     color: white;
+    transition: all 0.3s ease;
 }
-.profileScreenBody{
+
+.profileScreenBody {
     display: flex;
     flex-direction: column;
     width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 8% ;
+    margin: 0 auto;
+    padding-top: 8%;
     max-width: 700px;
 }
-.profileScreenBody> h1{
+
+.profileScreenBody > h1 {
     font-size: 60px;
     font-weight: 400;
     border-bottom: 1px solid #282c2d;
     margin-bottom: 20px;
+    transition: border-color 0.3s ease;
 }
-.pfs_info{
-    display: flex;
-}
-.pfs_details{
-    color: aliceblue;
-    margin-left: 25px;
-    flex: 1;
 
+.pfs_info {
+    display: flex;
+    gap: 25px;
 }
+
 .pfs_info > img {
     height: 100px;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
 }
 
-.pfs_details >h2{
+.pfs_info > img:hover {
+    transform: scale(1.05);
+}
+
+.pfs_details {
+    color: aliceblue;
+    flex: 1;
+}
+
+.pfs_details > h2 {
     background-color: grey;
-    padding: 15px;
+    padding: 15px 20px;
     font-size: 15px;
-    padding-left: 20px;
+    transition: background-color 0.3s ease;
 }
 
-.pfs_signout_button{
+.pfs_signout_button, .pfs_subscribe_button {
     padding: 10px 20px;
     font-size: 1rem;
-    margin-top: 5%;
-    width: 100%;
     color: #fff;
-    background-color: #e50914;
     border: none;
     cursor: pointer;
     font-weight: 700;
-
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
-.pfs_plans > h3{
-    border-bottom: 1px solid #282c2d;
-    margin: 20px;
 
+.pfs_signout_button {
+    margin-top: 5%;
+    width: 100%;
+    background-color: #e50914;
+}
+
+.pfs_signout_button:hover {
+    background-color: #f6121d;
+    transform: translateY(-2px);
+}
+
+.pfs_plans > h3 {
+    border-bottom: 1px solid #282c2d;
+    padding-bottom: 10px;
+    margin: 20px 0;
+}
+
+.pfs_plan {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 15px 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pfs_plan:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.pfs_plan_info h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #fff;
+}
+
+.pfs_plan_info p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.pfs_subscribe_button {
+    background-color: #e50914;
+}
+
+.pfs_subscribe_button:hover {
+    background-color: #f6121d;
+    box-shadow: 0 2px 10px rgba(229, 9, 20, 0.5);
+}
+
+.pfs_current_button {
+    background-color: #1f80e0;
+    color: white;
+    padding: 10px 15px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: default;
+    opacity: 0.7;
 }

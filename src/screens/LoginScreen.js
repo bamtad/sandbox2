@@ -29,7 +29,7 @@ function LoginScreen() {
         <>
           <h1>Unlimited Movies, TV Series and more</h1>
           <h2>Watch anywhere on any device, cancel anytime</h2>
-          <h3>Readt to start? enter your email to get going!</h3>
+          <h3>Ready to start? enter your email to get going!</h3>
 
           <div className="loginscreen_input">
             <form>

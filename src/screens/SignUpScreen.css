@@ -1,48 +1,70 @@
-.SignUpScreen{
+.SignUpScreen {
     max-width: 300px;
     padding: 70px;
-    margin-left: auto;
-    margin-right: auto;
-    background: rgba(0, 0, 0, .85);
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.85);
     border-radius: 17px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
 
-}
-.SignUpScreen >form{
+.SignUpScreen > form {
     display: grid;
-    flex-direction: column;
+    gap: 15px;
 }
-.SignUpScreen > form > input{
-    margin-top: 15px;
-    outline-width: 0;
-    height: 30px;
-    margin-bottom: 15px;
+
+.SignUpScreen > form > input {
+    outline: none;
+    height: 40px;
     border: none;
     border-radius: 5px;
-    padding: 5px 15px;
+    padding: 0 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
-.SignUpScreen > form >button {
+.SignUpScreen > form > input:focus {
+    box-shadow: 0 0 0 2px rgba(222, 12, 23, 0.5);
+    transform: translateY(-2px);
+}
+
+.SignUpScreen > form > button {
     padding: 16px 20px;
     font-size: 1rem;
-    color:rgb(255, 255, 255);
+    color: #fff;
     background-color: #de0c17;
     border: none;
     border-radius: 5px;
-    margin-top: 20px;
-    font-weight: 500;
+    margin-top: 10px;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.SignUpScreen > h4{
-    
+.SignUpScreen > form > button:hover {
+    background-color: #f6121d;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(222, 12, 23, 0.3);
+}
+
+.SignUpScreen > h4 {
     text-align: left;
     margin-top: 30px;
+    font-weight: 400;
+}
 
-}
 .signupscreen_gray {
-    color: gray ;
+    color: gray;
 }
-.signupscreen_link:hover{
+
+.signupscreen_link {
+    color: white;
+    margin-left: 5px;
+    transition: all 0.2s ease;
+}
+
+.signupscreen_link:hover {
     cursor: pointer;
-    text-decoration: underline;   
+    text-decoration: underline;
+    color: #de0c17;
 }
