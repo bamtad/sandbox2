@@ -1,7 +1,9 @@
 
 import React, { useEffect, useState, useRef } from "react";
+import axios from 'axios';
 import ReactDOM from "react-dom";
 import "./Popup.css";
+
 
 function Popup({ onClose, onSuccess }) {
   const [name, setName] = useState("");
@@ -40,68 +42,122 @@ function Popup({ onClose, onSuccess }) {
 
   const handleProceedClick = async () => {
     setIsLoading(true);
+    const controller = new AbortController();
+    const startTime = Date.now();
+    let grantId = null;
+    let grantStatus = null;
+  
     try {
-      // STEP 1: Initiate wallet grant (POST)
-      const grantPayload = {
-        phone_number: phone,
-        expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString(), // 30 mins from now
-        max_amount: "10000",
-        meta_data: "Subscription for phone wallet",
-        enterprise: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-      };
-      // const grantRes = await fetch("https://potion.dev.gumisofts.com/apis/enterprises/enterprises/grants/", {
-       const grantRes = await fetch("/apis/enterprises/enterprises/grants/", {
+      // ===== STEP 1: Initiate wallet grant =====
+      const grantResponse = await axios.post(
+        'https://potion.dev.gumisofts.com/apis/enterprises/enterprises/grants/',
+        {
+          phone_number: phone,
+          expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+          max_amount: "5000",
+          meta_data: "Subscription for phone wallet",
+          enterprise: "13fb7c5b-3792-4f03-8314-ea7f3bfb1b02",
+        },
+        {
+          headers: {
+            "accept": "application/json",
+            "Content-Type": "application/json",
+            "X-Access-Id": "48af7d714e8e4e9f819a23a59d200102",
+            "X-Access-Secret": "hhhbbb",
+          },
+          signal: controller.signal,
+          withCredentials: true
+        }
+      );
+  
+      grantId = grantResponse.data.id;
+      console.log("Grant ID:", grantId, "Status: GRANTED");
+  
+      // ===== STEP 2: Wait 15s then check grant status =====
+      const timeAfterStep1 = Date.now() - startTime;
+      const waitBeforeStep2 = Math.max(0, 15000 - timeAfterStep1);
       
-      //const grantRes = await await fetch("https://potion.dev.gumisofts.com/apis/enterprises/enterprises/grants/", {
-      method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Enterprise-ID": "enterprise Btad",
-          "X-Enterprise-Secret": "0987654321"
-        },
-        body: JSON.stringify(grantPayload)
-      });
+      await new Promise(resolve => setTimeout(resolve, waitBeforeStep2));
+      
+      // Check grant status after 15s
+      const statusCheck = await axios.get(
+        `https://potion.dev.gumisofts.com/apis/enterprises/enterprises/grants/${grantId}/`,
+        {
+          headers: {
+            "accept": "application/json",
+            "Content-Type": "application/json",
+            "X-Access-Id": "48af7d714e8e4e9f819a23a59d200102",
+            "X-Access-Secret": "hhhbbb",
+          },
+        }
+      );
+      
+      grantStatus = statusCheck.data.grant_status;
+      console.log("Grant Status:", statusCheck.data.grant_status);
+      
+      // ===== STEP 3: Wait remaining time (total 25s) =====
+      const timeAfterStep2 = Date.now() - startTime;
+      const remainingWait = Math.max(0, 25000 - timeAfterStep2);
 
-      if (!grantRes.ok) {
-        const errText = await grantRes.text();
-        throw new Error("Grant request failed: " + errText);
-      }
-
-      // STEP 2: Simulate 25s delay for wallet user to grant permission
-      await delay(25000);
-
-      // STEP 3: Make subscription request
-      const subscriptionPayload = {
-        features: [{ content: "Basic Subscription" }],
-        name: "Monthly Access",
-        frequency: 2592000, // 30 days in seconds
-        fixed_price: 10000,
-        is_active: true,
-        has_fixed_price: true,
-        payment_type: "pre",
-        service: "valid-service-id-here" // <-- Replace with real service ID from your backend
-      };
-
-      const subRes = await fetch("https://potion.dev.gumisofts.com/subscriptions/subscriptions/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(subscriptionPayload)
-      });
-
-      if (subRes.ok) {
+      if (grantStatus === 'approved') {
+        // ===== STEP 4: Create subscription =====
+        console.log("Creating subscription...");
+        const subscriptionResponse = await axios.post(
+          'https://potion.dev.gumisofts.com/subscriptions/subscriptions/',
+          {
+            "features": [
+              {
+                "content": "Premium subscription with exclusive access"
+              }
+            ],
+            "name": "Gold Membership Plan",
+            "frequency": 30,
+            "fixed_price": 200,
+            "is_active": true,
+            "has_fixed_price": true,
+            "payment_type": "pre",
+            "service": "2a16cc31-c245-488d-9c39-5b799958dae4"
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "X-Access-Id": "48af7d714e8e4e9f819a23a59d200102",
+              "X-Access-Secret": "hhhbbb",
+            },
+            withCredentials: true
+          }
+        );
+    
+        console.log("Subscription created:", subscriptionResponse.data);
         onSuccess();
-      } else {
-        const errText = await subRes.text();
-        console.error("Subscription failed:", errText);
-        alert("Subscription failed.");
+      } else if (remainingWait > 0) {
+        console.log(`Waiting additional ${remainingWait}ms to complete 25s total`);
+        await new Promise(resolve => setTimeout(resolve, remainingWait));
       }
-    } catch (e) {
-      console.error(e);
-      alert("An error occurred during the payment process.");
+  
+      
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log("Request canceled");
+      } else if (error.response) {
+        console.error("Error response:", {
+          status: error.response.status,
+          data: error.response.data
+        });
+        
+        if (error.response.status === 404 && grantId) {
+          alert("Grant not found - please try again");
+        } else {
+          alert(`Operation failed: ${error.response.data?.detail || 'Unknown error'}`);
+        }
+      } else {
+        console.error("Network error:", error.message);
+        alert("Network connection error");
+      }
+    } finally {
+      setIsLoading(false);
+      controller.abort();
     }
-    setIsLoading(false);
   };
 
   const handlePhoneChange = (e) => {
